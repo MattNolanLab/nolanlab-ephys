@@ -60,8 +60,11 @@ for recording, sorting, typ in zip(recordings, sortings, typs):
         format = "zarr",
         peak_sign = "both",
         radius_um = 70,
+        overwrite=True,
     )
 
     analyzer.compute(generic_postprocessing)
 
-    subprocess.run(["rm", "-r", str(analyzer_folder / "extensions/waveforms")]) 
+    subprocess.run(["rm", "-r", str(Path(str(analyzer_folder) + '.zarr') / "extensions/waveforms")]) 
+
+
