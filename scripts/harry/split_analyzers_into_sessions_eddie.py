@@ -40,9 +40,9 @@ for day in days:
     subprocess.run(['mkdir', '-p', str(deriv_folder /  f"M{mouse}/D{day}/full/kilosort4/") ])
 
     stageout_dict = {}
-    stageout_dict[str(deriv_folder / f"M{mouse}/D{day}/of1/kilosort4/sub-M{mouse}_ses-D{day}_typ-OF1_srt-kilosort4_analyzer.zarr")] = eddie_active_projects / "Chris/Cohort12/derivatives" / f"M{mouse}/D{day}/of1/kilosort4/"
-    stageout_dict[str(deriv_folder / f"M{mouse}/D{day}/vr/kilosort4/sub-M{mouse}_ses-D{day}_typ-VR_srt-kilosort4_analyzer.zarr")] = eddie_active_projects / "Chris/Cohort12/derivatives" / f"M{mouse}/D{day}/vr/kilosort4/"
-    stageout_dict[str(deriv_folder / f"M{mouse}/D{day}/of2/kilosort4/sub-M{mouse}_ses-D{day}_typ-OF2_srt-kilosort4_analyzer.zarr")] = eddie_active_projects / "Chris/Cohort12/derivatives" / f"M{mouse}/D{day}/of2/kilosort4/"
+    stageout_dict[str(deriv_folder / f"M{mouse}/D{day}/of1/kilosort4/sub-M{mouse}_ses-D{day}_typ-OF1_srt-kilosort4_analyzer.zarr")] = eddie_active_projects / "Chris/Cohort12/derivatives_for_split_analyzers" / f"M{mouse}/D{day}/of1/kilosort4/"
+    stageout_dict[str(deriv_folder / f"M{mouse}/D{day}/vr/kilosort4/sub-M{mouse}_ses-D{day}_typ-VR_srt-kilosort4_analyzer.zarr")] = eddie_active_projects / "Chris/Cohort12/derivatives_for_split_analyzers" / f"M{mouse}/D{day}/vr/kilosort4/"
+    stageout_dict[str(deriv_folder / f"M{mouse}/D{day}/of2/kilosort4/sub-M{mouse}_ses-D{day}_typ-OF2_srt-kilosort4_analyzer.zarr")] = eddie_active_projects / "Chris/Cohort12/derivatives_for_split_analyzers" / f"M{mouse}/D{day}/of2/kilosort4/"
     
     stagein_job_name = f"M{mouse}D{day}in" 
     run_python_name = f"M{mouse}D{day}run"
