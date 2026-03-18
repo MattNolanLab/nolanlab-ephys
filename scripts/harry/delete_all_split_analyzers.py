@@ -20,5 +20,5 @@ typs = ['OF1', 'VR', 'OF2']
 for mouse, days in of_days.items():
     for day in days:
         for typ in typs:
-            analyzer_folder = deriv_folder / f'M{mouse}/D{day}/{typ.lower()}/sub-M{mouse}_ses-D{day}_typ-{typ}_srt-kilosort4_analyzer.zarr'
+            analyzer_folder = deriv_folder / f'M{mouse}/D{day}/{typ.lower()}/kilosort4/sub-M{mouse}_ses-D{day}_typ-{typ}_srt-kilosort4_analyzer.zarr'
             print(f"rm -r {analyzer_folder}")
