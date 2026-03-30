@@ -51,8 +51,6 @@ def do_sorting_pipeline(mouse, day, sessions, data_folder, deriv_folder, protoco
 
     recording_paths = chronologize_paths(get_recording_folders(data_folder=data_folder, mouse =mouse, day=day))
 
-    make_probe_plot(recording_paths[0], save_path=deriv_folder / f"M{mouse:02d}/D{day:02d}/M{mouse:02d}_D{day:02d}_probe_layout.png")
-
     recordings = [si.read_openephys(recording_path) for recording_path in recording_paths]
 
     concatenated_recording = si.concatenate_recordings(recordings)

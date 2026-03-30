@@ -33,7 +33,7 @@ def get_recording_folders(data_folder, mouse, day):
 
     recording_folders = []
     for session_type in session_types:
-        recording_folders += list(Path(data_path).glob(f"{session_type}/M{mouse}_D{day}*"))
+        recording_folders += list(Path(data_path).glob(f"{session_type}/M{mouse:02d}_D{day:02d}*"))
 
     for a, recording_folder in enumerate(recording_folders):
         recording_folders[a] = str(recording_folder)
