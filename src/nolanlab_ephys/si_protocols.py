@@ -88,7 +88,8 @@ protocols = {
             'sorter_name': 'spykingcircus2',
             'apply_motion_correction': False,
             "cache_preprocessing": {
-                "mode": "folder"
+                "mode": "folder",
+                "folder": "sk2_pre"
             },
         },
         'preprocessing_for_analyzer': {
