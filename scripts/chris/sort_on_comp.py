@@ -4,6 +4,7 @@ from nolanlab_ephys.si_protocols import protocols
 from nolanlab_ephys.utils import get_recording_folders, chronologize_paths
 from nolanlab_ephys.probe_info import make_probe_plot
 from spikeinterface.curation.remove_excess_spikes import remove_excess_spikes
+from nolanlab_ephys.si_protocols import generic_postprocessing
 
 import spikeinterface.full as si
 

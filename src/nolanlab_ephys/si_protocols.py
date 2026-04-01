@@ -87,6 +87,9 @@ protocols = {
         'sorting': {
             'sorter_name': 'spykingcircus2',
             'apply_motion_correction': False,
+            "cache_preprocessing": {
+                "mode": "folder"
+            },
         },
         'preprocessing_for_analyzer': {
             'bandpass_filter': {},
@@ -99,6 +102,7 @@ protocols = {
         },
         'sorting': {
             'sorter_name': 'tridesclous2',
+            'cache_preprocessing_mode': 'folder',
         },
         'preprocessing_for_analyzer': {
             'bandpass_filter': {},
