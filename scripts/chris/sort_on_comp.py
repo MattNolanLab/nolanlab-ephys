@@ -67,7 +67,7 @@ def do_sorting_pipeline(mouse, day, sessions, data_folder, deriv_folder, protoco
     for recording, session in zip(recordings, sessions):
 
         # we do all our syncing assuming that t=0 is at the start of the ephys data
-        recording._recording_segments[0].t_start = 0
+        recording.segments[0].t_start = 0
 
         recording_total_samples = recording.get_total_samples()
         one_sorting = sorting.frame_slice(cumulative_samples, cumulative_samples+recording_total_samples)
