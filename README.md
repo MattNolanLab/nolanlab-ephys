@@ -4,6 +4,8 @@ This is the main repo for processing ephys data in the Nolan Lab. The pipeline s
 
  ![An ephys analysis pipeline](ephys_pipeline.png)
 
+You can visualise the output of this pipelins using: https://github.com/MattNolanLab/clusters
+
 This repo represents a _minimum viable product_: it contains a working spike sorting pipeline. But it has been forked and modified when applied to other projects in the lab. The modified repos can be found here:
 
 - https://github.com/chrishalcrow/nolanlab-ephys (Code which sorts Harry, Bri, Wolf, Junji and Teris' data can be found in scrips/{experimenter_name})
