@@ -4,11 +4,15 @@ This is the main repo for processing ephys data in the Nolan Lab. The pipeline s
 
  ![An ephys analysis pipeline](ephys_pipeline.png)
 
-You can visualise the output of this pipelins using: https://github.com/MattNolanLab/clusters
+Read about the entire NolanLab pipeline: https://github.com/MattNolanLab/analysis_pipelines
+
+You can visualise the output of this pipeline using: https://github.com/MattNolanLab/clusters
 
 This repo represents a _minimum viable product_: it contains a working spike sorting pipeline. But it has been forked and modified when applied to other projects in the lab. The modified repos can be found here:
 
 - https://github.com/chrishalcrow/nolanlab-ephys (Code which sorts Harry, Bri, Wolf, Junji and Teris' data can be found in scrips/{experimenter_name})
+
+## Use on your own computer
 
 To begin using this repo, please download (clone) the repo from github. Then enter the directory and start using the codebase!
 
@@ -22,6 +26,10 @@ Then you can run anything you'd like using (`uv`)[https://docs.astral.sh/uv/gett
 ```
 uv run scripts/template/sort_on_comp.py
 ```
+
+Read more about the `sort_on_comp.py` script by opening the file: there's lots of documentation inside.
+
+The different spike sorting protocols can be found in `src/nolanlab_ephys/si_protocols.py`.
 
 ## Using on EDDIE
 
@@ -47,4 +55,3 @@ Now you can run some scripts! Each script is kept in `scripts/experimenter_name/
 uv run scripts/wolf/sort_on_eddie.py 25 20 OF1,VR,OF2 kilosort4A --data_folder /exports/eddie/scratch/chalcrow/wolf/data/ --deriv_folder /exports/eddie/scratch/chalcrow/wolf/derivatives
 ```
 
-The different spike sorting protocols can be found in `src/nolanlab_ephys/si_protocols.py`.
