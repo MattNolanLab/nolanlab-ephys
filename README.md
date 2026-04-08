@@ -2,7 +2,7 @@
 
 This is the main repo for processing ephys data in the Nolan Lab. The pipeline step takes in raw ephys data and outputs a SpikeInterface sorting analyzer:
 
-![An ephys analysis pipeline](ephys_pipeline.pdf)
+ ![An ephys analysis pipeline](ephys_pipeline.pdf)
 
 This repo represents a _minimum viable product_: it contains a working spike sorting pipeline. But it has been forked and modified when applied to other projects in the lab. The modified repos can be found here:
 
