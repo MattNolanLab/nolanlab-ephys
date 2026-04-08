@@ -1,14 +1,22 @@
+"""
+Some utility functions.
+"""
+
 import os
-import sys
 from pathlib import Path
 import numpy as np
 import spikeinterface.full as si
 
+
 def get_chrono_concat_recording(data_folder, mouse, day, sessions=None):
 
-    recording_folders = chronologize_paths(get_recording_folders(data_folder=data_folder, mouse =mouse, day=day, sessions=sessions))
-    
-    mouseday_recording_folders = chronologize_paths(get_recording_folders(data_folder=data_folder, mouse =mouse, day=day))
+    recording_folders = chronologize_paths(
+        get_recording_folders(data_folder=data_folder, mouse=mouse, day=day, sessions=sessions)
+    )
+
+    mouseday_recording_folders = chronologize_paths(
+        get_recording_folders(data_folder=data_folder, mouse=mouse, day=day)
+    )
 
     session_names = get_session_names(mouseday_recording_folders)
 
@@ -17,15 +25,19 @@ def get_chrono_concat_recording(data_folder, mouse, day, sessions=None):
         recording_folders = np.array(mouseday_recording_folders)[np.array(included_sessions)]
     else:
         recording_folders = np.array(mouseday_recording_folders)
-    
-    if mouse in (20,21):
-        recordings = [si.read_zarr(Path(recording_folder) / 'recording.zarr') for recording_folder in recording_folders]
+
+    if mouse in (20, 21):
+        recordings = [
+            si.read_zarr(Path(recording_folder) / "recording.zarr")
+            for recording_folder in recording_folders
+        ]
     else:
         recordings = [si.read_openephys(recording_folder) for recording_folder in recording_folders]
 
     recording = si.concatenate_recordings(recordings)
 
     return recording
+
 
 def get_recording_folders(data_folder, mouse, day, sessions=None):
     """
@@ -50,7 +62,7 @@ def get_recording_folders(data_folder, mouse, day, sessions=None):
 
 
     This function returns the recording folders. It also deals with the case if you
-    have a extra /data directory. This is often not used for 
+    have a extra /data directory. This is often not used for
     the raw data but is used when processing.
     """
 
@@ -59,7 +71,17 @@ def get_recording_folders(data_folder, mouse, day, sessions=None):
     # if len(list(Path(data_folder).glob('data/')))>0:
     #     data_path += 'data/'
 
-    sessions = ['OF', 'VR', 'of', 'vr', 'vr_multi_context', 'allen_brain_observatory_visual_sequences', 'allen_brain_observatory_visual_multi_sequences', 'allen_brain_observatory_visual_coding', 'dvd_waitscreen']
+    sessions = [
+        "OF",
+        "VR",
+        "of",
+        "vr",
+        "vr_multi_context",
+        "allen_brain_observatory_visual_sequences",
+        "allen_brain_observatory_visual_multi_sequences",
+        "allen_brain_observatory_visual_coding",
+        "dvd_waitscreen",
+    ]
 
     recording_folders = list(Path(data_path).glob(f"M{mouse:02d}_D{day:02d}_*"))
 
@@ -80,14 +102,14 @@ def get_session_names(raw_recording_paths):
     # This dictionary maps the session names we use to the different
     # naming conventions the experimenter used during the experiment.
     session_naming_dict = {
-        'OF1': ['OF1'],
-        'OF2': ['OF2'],
-        'VR': ['VR1'],
-        'MCVR': ['MCVR1', 'MCVR', 'VRMC'],
-        'IM': ['IM', 'IM1', 'VID1', 'VIS1'],
-        'IMSEQ': ['IMSEQ'],
-        'IMSEQ2': ['IMSEQ2'],
-        'DVD': ['DVD', 'HDDVD'],
+        "OF1": ["OF1"],
+        "OF2": ["OF2"],
+        "VR": ["VR1"],
+        "MCVR": ["MCVR1", "MCVR", "VRMC"],
+        "IM": ["IM", "IM1", "VID1", "VIS1"],
+        "IMSEQ": ["IMSEQ"],
+        "IMSEQ2": ["IMSEQ2"],
+        "DVD": ["DVD", "HDDVD"],
     }
 
     session_names = []
@@ -101,8 +123,9 @@ def get_session_names(raw_recording_paths):
 
         if not got_session_type:
             raise Exception("Don't know session type")
-        
+
     return session_names
+
 
 def this_is_zarr(recording_folder):
     """
@@ -112,7 +135,7 @@ def this_is_zarr(recording_folder):
     """
 
     zarr_recording = False
-    if '.zarr' in str(recording_folder) or len(list(Path(recording_folder).rglob('*.zarr/')))>0:
+    if ".zarr" in str(recording_folder) or len(list(Path(recording_folder).rglob("*.zarr/"))) > 0:
         zarr_recording = True
 
     return zarr_recording
@@ -121,17 +144,17 @@ def this_is_zarr(recording_folder):
 def get_recording_from(recording_folder):
 
     if this_is_zarr(recording_folder):
-        if '.zarr' not in str(recording_folder):
-            recording_folder = Path(recording_folder) / Path('recording.zarr')
+        if ".zarr" not in str(recording_folder):
+            recording_folder = Path(recording_folder) / Path("recording.zarr")
         recording = si.load_extractor(recording_folder)
     else:
-        recording = si.read_openephys(recording_folder / Path('Record Node 109'))
+        recording = si.read_openephys(recording_folder / Path("Record Node 109"))
 
     return recording
 
 
 def get_recordings_from(recording_folders):
-    
+
     recordings = []
     for recording_folder in recording_folders:
         recordings.append(get_recording_from(recording_folder))
@@ -140,7 +163,7 @@ def get_recordings_from(recording_folders):
 
 
 def chronologize_paths(recording_paths):
-    """ 
+    """
     For a given set of paths, put them in chronological order
     """
     # get basenames of the recordings
@@ -150,13 +173,3 @@ def chronologize_paths(recording_paths):
     # reorganise recording_paths based on np.argsort(time_dates)
     recording_paths = np.array(recording_paths)[np.argsort(time_dates)]
     return recording_paths.tolist()
-
-
-
-
-
-
-
-
-
-
