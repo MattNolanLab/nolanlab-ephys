@@ -24,6 +24,22 @@ protocols = {
         },
     },
 
+    'kilosort4B': {
+        'preprocessing': {
+            'phase_shift': {},
+        },
+        'sorting': {
+            'sorter_name': 'kilosort4',
+            'do_correction': True,
+            'use_binary_file': False,
+        },
+        'preprocessing_for_analyzer': {
+            'phase_shift': {},
+            'common_reference': {},
+            'bandpass_filter': {},
+        },
+    },
+
     'mountainsort5A': {
         'preprocessing': {
             # 'bandpass_filter': {},
@@ -98,8 +114,27 @@ protocols = {
         },
     },
 
+
+    'spykingcircus2B': {
+        'preprocessing': {
+        },
+        'sorting': {
+            'sorter_name': 'spykingcircus2',
+            'apply_motion_correction': True,
+            "cache_preprocessing": {
+                "mode": "folder",
+                "folder": "sk2_pre"
+            },
+        },
+        'preprocessing_for_analyzer': {
+            'bandpass_filter': {},
+            'common_reference': {},
+        },
+    },
+
     'tridesclous2A': {
         'preprocessing': {
+            'apply_motion_correction': False
         },
         'sorting': {
             'sorter_name': 'tridesclous2',
@@ -111,6 +146,48 @@ protocols = {
         },
     },
 
+    'tridesclous2B': {
+        'preprocessing': {
+            'apply_motion_correction': True
+        },
+        'sorting': {
+            'sorter_name': 'tridesclous2',
+            'cache_preprocessing_mode': 'folder',
+        },
+        'preprocessing_for_analyzer': {
+            'bandpass_filter': {},
+            'common_reference': {},
+        },
+    },
+
+    'lupinA': {
+        'preprocessing': {
+            'apply_motion_correction': False
+
+        },
+        'sorting': {
+            'sorter_name': 'tridesclous2',
+            'cache_preprocessing_mode': 'folder',
+        },
+        'preprocessing_for_analyzer': {
+            'bandpass_filter': {},
+            'common_reference': {},
+        },
+    },
+
+    'lupinB': {
+        'preprocessing': {
+            'apply_motion_correction': True,
+        },
+        'sorting': {
+            'sorter_name': 'tridesclous2',
+            'cache_preprocessing_mode': 'folder',
+        },
+        'preprocessing_for_analyzer': {
+            'bandpass_filter': {},
+            'common_reference': {},
+        },
+    },
 
 }
 
