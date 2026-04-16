@@ -60,6 +60,11 @@ def get_recording_folders(data_folder, mouse, day, sessions=None):
         M{mouse}_D{day}_date-time/
             {another session type}/
 
+    or
+
+    data_folder/
+        {mouse}/
+            {mouse}_{date}*/
 
     This function returns the recording folders. It also deals with the case if you
     have a extra /data directory. This is often not used for
@@ -68,14 +73,12 @@ def get_recording_folders(data_folder, mouse, day, sessions=None):
 
     recording_folders = []
     data_path = data_folder
-    # if len(list(Path(data_folder).glob('data/')))>0:
-    #     data_path += 'data/'
 
     sessions = [
-        "OF",
-        "VR",
         "of",
         "vr",
+        "openfield",
+        "openfieldcd",
         "vr_multi_context",
         "allen_brain_observatory_visual_sequences",
         "allen_brain_observatory_visual_multi_sequences",
@@ -83,13 +86,49 @@ def get_recording_folders(data_folder, mouse, day, sessions=None):
         "dvd_waitscreen",
     ]
 
-    recording_folders = list(Path(data_path).glob(f"M{mouse:02d}_D{day:02d}_*"))
+    try_both_mousestrings = False
+    if isinstance(mouse, int):
+        mouse_string = f"M{mouse:02d}"
+        mouse_string_2 = f"M{mouse}"
+        if mouse_string != mouse_string_2:
+            try_both_mousestrings = True
+    else:
+        mouse_string = mouse
 
-    for a, recording_folder in enumerate(recording_folders):
-        recording_folders[a] = str(recording_folder)
+    try_both_daystrings = False
+    if isinstance(day, int):
+        day_string = f"D{day:02d}"
+        day_string_2 = f"D{day}"
+        if day_string != day_string_2:
+            try_both_daystrings = True            
+    else:
+        day_string = day
 
+    subfolder_to_look_in = []
+
+    # Bri's recordings are ordered by mouse id
+    folders_called_mousename_in_data_folder = list(Path(data_path).glob(mouse_string))
+    if len(folders_called_mousename_in_data_folder) > 0:
+        subfolder_to_look_in = folders_called_mousename_in_data_folder
+
+    # Harry, Wolf recordings are ordered by mouse id
+    folders_called_session_in_data_folder = []
     for session_type in sessions:
-        recording_folders += list(Path(data_path).glob(f"{session_type}/M{mouse:02d}_D{day:02d}*"))
+        folders_called_session_in_data_folder = folders_called_session_in_data_folder + list(Path(data_path).glob(session_type)) 
+
+    if len(folders_called_session_in_data_folder) > 0:
+        subfolder_to_look_in = subfolder_to_look_in + folders_called_session_in_data_folder
+
+    recording_folders = []#list(Path(data_path).glob(f"{mouse_string}_{day_string}_*"))
+
+    for subfolder in subfolder_to_look_in:
+        recording_folders += list(Path(subfolder).glob(f"{mouse_string}_{day_string}*"))
+        if try_both_daystrings:
+            recording_folders += list(Path(subfolder).glob(f"{mouse_string}_{day_string_2}*"))
+        if try_both_mousestrings:
+            recording_folders += list(Path(subfolder).glob(f"{mouse_string_2}_{day_string}*"))
+        if try_both_daystrings and try_both_mousestrings:
+            recording_folders += list(Path(subfolder).glob(f"{mouse_string_2}_{day_string_2}*"))
 
     return recording_folders
 
