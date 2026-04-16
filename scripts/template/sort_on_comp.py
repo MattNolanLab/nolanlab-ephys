@@ -34,13 +34,12 @@ deriv_folder/
 from argparse import ArgumentParser
 from pathlib import Path
 from nolanlab_ephys.sort import do_sorting_pipeline_concat_then_split
-
-import spikeinterface.full as si
+from nolanlab_ephys.utils import get_recording_folders, chronologize_paths
 
 
 def main():
 
-    # Most of this script is just parsing the user input...
+    # Parse the user input
 
     parser = ArgumentParser()
 
@@ -68,10 +67,24 @@ def main():
     mouseday_deriv_folder = deriv_folder / f"M{mouse:02d}/D{day:02d}"
     mouseday_deriv_folder.mkdir(parents=True, exist_ok=True)
 
-    si.set_global_job_kwargs(n_jobs=n_jobs)
+    recording_paths = chronologize_paths(
+        get_recording_folders(data_folder=data_folder, mouse=mouse, day=day)
+    )
 
     for protocol in protocols_list:
-        do_sorting_pipeline_concat_then_split(mouse, day, sessions, data_folder, deriv_folder, protocol)
+        analyzer_paths = [
+            deriv_folder
+            / f"M{mouse:02d}/D{day:02d}/{session}/{protocol}/sub-{mouse:02d}_day-{day:02d}_ses-{session}_srt-{protocol}_analyzer"
+            for session in sessions
+        ]
+
+        do_sorting_pipeline_concat_then_split(
+            recording_paths,
+            analyzer_paths,
+            protocol,
+            sorting_output_folder=f"sorting_output_{mouse:02d}_{day:02d}_{protocol}",
+            n_jobs=n_jobs,
+        )
 
 
 if __name__ == "__main__":
