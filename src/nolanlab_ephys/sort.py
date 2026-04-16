@@ -14,7 +14,8 @@ def do_sorting_pipeline_concat_then_split(
     n_jobs=1,
 ):
     """
-    Concatenates all recordings into one and sorts, then splits the large sorting into a sorting per session.
+    Concatenates all recordings into one and sorts them.
+    Then splits the large sorting into a sorting per session, and creates and analyzer for each.
     """
 
     if len(recording_paths) != len(analyzer_paths):
@@ -81,7 +82,7 @@ def do_sorting_pipeline_concat(
     n_jobs=1,
 ):
     """
-    Concatenates all recordings into one and sorts, and makes an analyzer.
+    Concatenates all recordings into one and sort them, then creates an analyzer for concatenated recording.
     Note that all, e.g., quality metrics are computed for concatenated recordings, rather than each session.
     """
 
