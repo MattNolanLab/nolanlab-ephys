@@ -100,7 +100,7 @@ def get_recording_folders(data_folder, mouse, day, sessions=None):
         day_string = f"D{day:02d}"
         day_string_2 = f"D{day}"
         if day_string != day_string_2:
-            try_both_daystrings = True            
+            try_both_daystrings = True
     else:
         day_string = day
 
@@ -114,13 +114,15 @@ def get_recording_folders(data_folder, mouse, day, sessions=None):
     # Harry, Wolf recordings are ordered by mouse id
     folders_called_session_in_data_folder = []
     for session_type in sessions:
-        folders_called_session_in_data_folder = folders_called_session_in_data_folder + list(Path(data_path).glob(session_type)) 
+        folders_called_session_in_data_folder = folders_called_session_in_data_folder + list(
+            Path(data_path).glob(session_type)
+        )
 
     if len(folders_called_session_in_data_folder) > 0:
         subfolder_to_look_in = subfolder_to_look_in + folders_called_session_in_data_folder
 
-    recording_folders = []#list(Path(data_path).glob(f"{mouse_string}_{day_string}_*"))
-
+    recording_folders = []
+    
     for subfolder in subfolder_to_look_in:
         recording_folders += list(Path(subfolder).glob(f"{mouse_string}_{day_string}*"))
         if try_both_daystrings:
