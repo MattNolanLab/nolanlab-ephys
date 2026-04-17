@@ -5,11 +5,13 @@ This script is the pipeline step:
 | raw ephys |    --->    | sorting analyzer |
 |-----------|            |------------------|
 
-It can be called from the command line as follows:
+It can be called from the command line. An example:
 
 uv run sort_on_comp.py --mouse 6 --day 12 --sessions OF1,VR,OF2 --protocols kilosort4A --data_folder /home/nolanlab/Work/Harry_Project/data/ --deriv_folder /home/nolanlab/Work/Harry_Project/derivatives/
 
-This will take the ephys data for mouse "6" on day "12" for the three session types "OF1", "VR" and "OF2", and sort them using protocol "kilosort4A", as described in `nolanlab-ephys/src/nolanlab_ephy/si_protocols.py`. We sort all three sessions together as one, but produce a sorting analyzer for each one.
+This will take the ephys data for mouse "6" on day "12" for the three session types "OF1", "VR" and "OF2",
+and sort them using protocol "kilosort4A", as described in `nolanlab-ephys/src/nolanlab_ephy/si_protocols.py`.
+We sort all three sessions together as one, but produce a sorting analyzer for each one.
 
 We expect the data to be stored in the form
 
@@ -33,6 +35,8 @@ deriv_folder/
 
 from argparse import ArgumentParser
 from pathlib import Path
+import spikeinterface.full as si
+
 from nolanlab_ephys.sort import do_sorting_pipeline_concat_then_split
 from nolanlab_ephys.utils import get_recording_folders, chronologize_paths
 
@@ -70,6 +74,7 @@ def main():
     recording_paths = chronologize_paths(
         get_recording_folders(data_folder=data_folder, mouse=mouse, day=day)
     )
+    recordings = [si.read_openephys(recording_path) for recording_path in recording_paths]
 
     for protocol in protocols_list:
         analyzer_paths = [
@@ -79,7 +84,7 @@ def main():
         ]
 
         do_sorting_pipeline_concat_then_split(
-            recording_paths,
+            recordings,
             analyzer_paths,
             protocol,
             sorting_output_folder=f"sorting_output_{mouse:02d}_{day:02d}_{protocol}",

@@ -7,7 +7,7 @@ from nolanlab_ephys.si_protocols import generic_postprocessing
 
 
 def do_sorting_pipeline_concat_then_split(
-    recording_paths,
+    recordings,
     analyzer_paths,
     protocol: str,
     sorting_output_folder=None,
@@ -18,7 +18,7 @@ def do_sorting_pipeline_concat_then_split(
     Then splits the large sorting into a sorting per session, and creates and analyzer for each.
     """
 
-    if len(recording_paths) != len(analyzer_paths):
+    if len(recordings) != len(analyzer_paths):
         raise ValueError("length of `recording_paths` not equal to length of `analyzer_paths`")
 
     si.set_global_job_kwargs(n_jobs=n_jobs)
@@ -30,7 +30,6 @@ def do_sorting_pipeline_concat_then_split(
 
     protocol_info = protocols[protocol]
 
-    recordings = [si.read_openephys(recording_path) for recording_path in recording_paths]
     concatenated_recording = si.concatenate_recordings(recordings)
 
     pp_recording = si.apply_preprocessing_pipeline(
@@ -75,7 +74,7 @@ def do_sorting_pipeline_concat_then_split(
 
 
 def do_sorting_pipeline_concat(
-    recording_paths,
+    recordings,
     analyzer_path,
     protocol: str,
     sorting_output_folder=None,
@@ -95,7 +94,6 @@ def do_sorting_pipeline_concat(
 
     si.set_global_job_kwargs(n_jobs=n_jobs)
 
-    recordings = [si.read_openephys(recording_path) for recording_path in recording_paths]
     concatenated_recording = si.concatenate_recordings(recordings)
 
     pp_recording = si.apply_preprocessing_pipeline(
