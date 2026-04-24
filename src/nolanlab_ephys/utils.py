@@ -39,7 +39,7 @@ def get_chrono_concat_recording(data_folder, mouse, day, sessions=None):
     return recording
 
 
-def get_recording_folders(data_folder, mouse, day, sessions=None):
+def get_recording_folders(data_folder, mouse, day, sessions=[]):
     """
 
     This function expects raw data to be in the format:
@@ -74,7 +74,7 @@ def get_recording_folders(data_folder, mouse, day, sessions=None):
     recording_folders = []
     data_path = data_folder
 
-    sessions = [
+    subfolder_names = [
         "of",
         "vr",
         "openfield",
@@ -113,7 +113,7 @@ def get_recording_folders(data_folder, mouse, day, sessions=None):
 
     # Harry, Wolf recordings are ordered by mouse id
     folders_called_session_in_data_folder = []
-    for session_type in sessions:
+    for session_type in subfolder_names:
         folders_called_session_in_data_folder = folders_called_session_in_data_folder + list(
             Path(data_path).glob(session_type)
         )
@@ -132,7 +132,13 @@ def get_recording_folders(data_folder, mouse, day, sessions=None):
         if try_both_daystrings and try_both_mousestrings:
             recording_folders += list(Path(subfolder).glob(f"{mouse_string_2}_{day_string_2}*"))
 
-    return recording_folders
+    if len(sessions) > 0:
+        recording_paths = [
+            p for p in recording_folders 
+            if str(p.name).split('_')[-1] in sessions
+        ]
+
+    return recording_paths
 
 
 def get_session_names(raw_recording_paths):
