@@ -1,5 +1,7 @@
 # /// script
 # dependencies = [
+#   "pyqtgraph",
+#   "PyQt5",
 #   "spikeinterface-gui",
 #   "spikeinterface",
 #   "numba",
