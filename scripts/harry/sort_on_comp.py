@@ -1,0 +1,72 @@
+from argparse import ArgumentParser
+from pathlib import Path
+from nolanlab_ephys.si_protocols import protocols
+from nolanlab_ephys.utils import get_recording_folders, chronologize_paths
+from nolanlab_ephys.si_protocols import generic_postprocessing
+
+import spikeinterface.full as si
+
+def main():
+
+    parser = ArgumentParser()
+
+    parser.add_argument('mouse')
+    parser.add_argument('day')
+    parser.add_argument('sessions')
+    parser.add_argument('protocols')
+    parser.add_argument('--data_folder', default=None)
+    parser.add_argument('--deriv_folder', default=None)
+
+    mouse = int(parser.parse_args().mouse)
+    day = int(parser.parse_args().day)
+
+    sessions_string = parser.parse_args().sessions
+    sessions = sessions_string.split(',')
+
+    protocols = parser.parse_args().protocols
+    protocols_list = protocols.split(',')
+
+    data_folder = parser.parse_args().data_folder
+    if data_folder is None:
+        data_folder = "/home/nolanlab/Work/Harry_Project/data/"
+    data_folder = Path(data_folder)
+
+    deriv_folder = parser.parse_args().deriv_folder
+    if deriv_folder is None:
+        deriv_folder = "/home/nolanlab/Work/Harry_Project/derivatives/"
+    deriv_folder = Path(deriv_folder)
+
+    si.set_global_job_kwargs(n_jobs=8)
+
+    for protocol in protocols_list:
+        _ = do_sorting_pipeline(mouse, day, sessions, data_folder, deriv_folder, protocol)
+
+def do_sorting_pipeline(mouse, day, sessions, data_folder, deriv_folder, protocol):
+
+    protocol_info = protocols[protocol]
+
+    recording_paths = chronologize_paths(get_recording_folders(data_folder=data_folder, mouse =mouse, day=day))
+
+    recordings = [si.read_openephys(recording_path) for recording_path in recording_paths]
+    recording = si.concatenate_recordings(recordings).split_by('group')
+
+    pp_recording = si.apply_preprocessing_pipeline(recording, protocol_info['preprocessing'])
+
+    #sorting = si.run_sorter(recording=pp_recording, **protocol_info['sorting'], remove_existing_folder=True, verbose=True, folder=f"M{mouse}_D{day}_{protocol}_{'-'.join(sessions)}_output")
+    sorting = si.read_kilosort(f"M{mouse}_D{day}_{protocol}_{'-'.join(sessions)}_output")
+
+    analyzer = si.create_sorting_analyzer(
+        recording=si.apply_preprocessing_pipeline(recording, protocol_info['preprocessing_for_analyzer']), 
+        sorting=sorting, 
+        folder = deriv_folder / f"M{mouse}/D{day}/{''.join(sessions)}/{protocol}_ks412/{protocol}",
+        format = "zarr",
+        peak_sign = "both",
+        radius_um = 70,
+    )
+
+    analyzer.compute(generic_postprocessing)
+
+    return analyzer
+
+if __name__ == "__main__":
+    main()
