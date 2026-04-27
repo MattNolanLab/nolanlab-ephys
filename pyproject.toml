@@ -31,4 +31,9 @@ spikeinterface = { git = "https://github.com/SpikeInterface/spikeinterface.git" 
 [dependency-groups]
 dev = [
     "nolanlab-ephys",
+    "ruff>=0.15.9",
 ]
+
+[tool.ruff]
+# Set the maximum line length to 100
+line-length = 100
