@@ -13,6 +13,7 @@ dependencies = [
     "numba>=0.62.1",
     "numpy",
     "pandas>=2.2.3",
+    "pytest>=9.0.3",
     "scipy",
     "skops>=0.13.0",
     "spikeinterface",

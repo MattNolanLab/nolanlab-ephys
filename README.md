@@ -27,9 +27,15 @@ deriv_folder/
 
 Read about the entire NolanLab pipeline: https://github.com/MattNolanLab/analysis_pipelines
 
+## Code organisation
+
+We use a source/scripts workflow. Source code (in the `src/nolanlab-ephys` folder) is meant to be fairly stable. Think hard before you modify it: it's designed to work with all the experiments in the lab. Scripts (in `scripts/{experimenters_name}`) are for bespoke, custom, individual code. You can make many scripts to do many things, or try out new ideas. 
+
 This repo represents a _minimum viable product_: it contains a working spike sorting pipeline. But it has been forked and modified when applied to other projects in the lab. The modified repos can be found here:
 
-- https://github.com/chrishalcrow/nolanlab-ephys (Code which sorts Harry, Bri, Wolf, Junji and Teris' data can be found in scrips/{experimenter_name})
+- https://github.com/chrishalcrow/nolanlab-ephys (Code which sorts Harry, Bri, Wolf, Junji and Teris' data can be found in scripts/{experimenter_name})
+
+Note that the modifications are contained to the scripts folder. The source folder is identical to the source folder here.
 
 ## Use on your own computer
 

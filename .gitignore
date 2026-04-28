@@ -1,3 +1,5 @@
-nolanlab_ephys/__pycache__/*
+src/nolanlab_ephys/__pycache__/*
+tests/__pycache__/*
 nolanlab_ephys.egg*
-
+*.DS_Store
+uv.lock
