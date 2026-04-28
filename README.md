@@ -34,7 +34,7 @@ Read about the entire NolanLab pipeline: https://github.com/MattNolanLab/analysi
 
 We use a source/scripts workflow. Source code (in the `src/nolanlab-ephys` folder) is meant to be fairly stable. Think hard before you modify it: it's designed to work with all the experiments in the lab. Scripts (in `scripts/{experimenters_name}`) are for bespoke, custom, individual code. You can make many scripts to do many things, or try out new ideas. 
 
-This repo represents a _minimum viable product_: it contains a working spike sorting pipeline. But it has been forked and modified when applied to other projects in the lab. The code used for different experiments in the lab can be found here:
+This repo represents a _minimum viable product_: it contains a working spike sorting pipeline. But it has been forked and modified when applied to other projects in the lab. The code based on this repo used for individual experiments in the lab can be found here:
 
 - [Harry](https://chrishalcrow.github.io/harry_data_readme/): https://github.com/chrishalcrow/nolanlab-ephys/tree/main/scripts/harry
 - [Wolf](https://chrishalcrow.github.io/wolf_data_readme/): https://github.com/chrishalcrow/nolanlab-ephys/tree/main/scripts/wolf
