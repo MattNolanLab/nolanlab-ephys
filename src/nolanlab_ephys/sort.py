@@ -2,8 +2,8 @@ from datetime import datetime
 
 import spikeinterface.full as si
 
-from nolanlab_ephys.si_protocols import protocols
-from nolanlab_ephys.si_protocols import generic_postprocessing
+from nolanlab_ephys.spikeinterface_tools import protocols
+from nolanlab_ephys.spikeinterface_tools import generic_postprocessing
 
 
 def do_sorting_pipeline_concat_then_split(
