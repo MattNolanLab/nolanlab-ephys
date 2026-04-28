@@ -1,3 +1,11 @@
+from pathlib import Path
+
+import spikeinterface.full as si
+import probeinterface as pi
+from spikeinterface.curation.curation_tools import resolve_merging_graph
+from spikeinterface.curation import validate_curation_dict
+
+
 """
 Protocols we use for spike sorting. Each protocol has a unique name of the form {sorter_name}{letter}. The protocol consists of three stages
 
@@ -7,14 +15,6 @@ Protocols we use for spike sorting. Each protocol has a unique name of the form 
 
 Understanding the details of these require understanding SpikeInterface. Here's a good place to start: https://spikeinterface.readthedocs.io/en/stable/get_started/quickstart.html
 """
-
-from pathlib import Path
-
-import spikeinterface.full as si
-import probeinterface as pi
-from spikeinterface.curation.curation_tools import resolve_merging_graph
-from spikeinterface.curation import validate_curation_dict
-
 protocols = {
     "kilosort4A": {
         "preprocessing": {
@@ -188,8 +188,8 @@ generic_postprocessing = {
     "spike_locations": {"peak_sign": "both"},
     "correlograms": {},
     "template_similarity": {"method": "l2"},
-    "quality_metrics": {},  # {'metric_names': ['num_spikes', 'firing_rate', 'presence_ratio', 'snr', 'isi_violation', 'rp_violation', 'sliding_rp_violation', 'amplitude_cutoff', 'amplitude_median', 'amplitude_cv', 'synchrony', 'firing_range', 'drift', 'sd_ratio'], 'metric_params': {'snr': {'peak_sign': 'both'}, 'amplitude_cutoff': {'peak_sign': 'both'}, 'amplitude_median': {'peak_sign': 'both'}}},
-    "template_metrics": {},  # {'include_multi_channel_metrics': True, 'peak_sign': 'both'},
+    "quality_metrics": {},
+    "template_metrics": {},
 }
 
 def attach_tetrode_to_recording(recording):

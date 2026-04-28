@@ -13,7 +13,7 @@ data_folder/
             Record Node 109/         <---- (or whatever openephys spits out)
 ```
 
-And output `SortingAnalyzer`s with the naming convention:
+And output `SortingAnalyzer`s and quality control plots with the naming convention:
 
 ```
 deriv_folder/
@@ -23,6 +23,9 @@ deriv_folder/
             {session_type}/
                 {protocol}/
                     sub-{mouse:02d}_day-{day:02d}_ses-{session}_srt-{protocol}_analyzer
+                    recording_quality_plots/
+                        sub-{mouse:02d}_day-{day:02d}_ses-{session}_srt-{protocol}_noise_across_time.png
+                        etc.
 ```
 
 Read about the entire NolanLab pipeline: https://github.com/MattNolanLab/analysis_pipelines
