@@ -133,12 +133,12 @@ def get_recording_folders(data_folder, mouse, day, sessions=[]):
             recording_folders += list(Path(subfolder).glob(f"{mouse_string_2}_{day_string_2}*"))
 
     if len(sessions) > 0:
-        recording_paths = [
+        recording_folders = [
             p for p in recording_folders 
             if str(p.name).split('_')[-1] in sessions
         ]
 
-    return recording_paths
+    return recording_folders
 
 
 def get_session_names(raw_recording_paths):
