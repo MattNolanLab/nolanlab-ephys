@@ -38,7 +38,7 @@ from pathlib import Path
 import spikeinterface.full as si
 
 from nolanlab_ephys.utils import get_recording_folders, chronologize_paths
-from nolanlab_ephys.quality_control import compute_noise_across_time, plot_noise_across_time, plot_motion_vector, plot_drift_map, compute_noise_and_good_units, plot_noise_and_good_units
+from nolanlab_ephys.np_quality_control import compute_noise_across_time, plot_noise_across_time, plot_motion_vector, plot_drift_map, compute_noise_and_good_units, plot_noise_and_good_units
 
 def main():
 
@@ -73,7 +73,7 @@ def main():
         pp_recording = si.depth_order(si.bandpass_filter(si.common_reference(recording)))
         analyzer = si.load_sorting_analyzer(analyzer_path)
 
-        quality_plots_folder = mouseday_deriv_folder / f'{session}/recording_quality_plots/'
+        quality_plots_folder = mouseday_deriv_folder / f'{session}/{protocol}/recording_quality_plots/'
         quality_plots_folder.mkdir(parents=True, exist_ok=True)
         
         noise_across_time_filename = quality_plots_folder / f"sub-{mouse}_day-{day}_type-{session}_noise_across_time.png"

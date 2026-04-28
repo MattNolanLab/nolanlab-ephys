@@ -26,6 +26,8 @@ def plot_noise_across_time(channel_noise_per_minute, output_filename):
     ax.set_title('Log RMS noise across time')
 
     fig.colorbar(im)
+
+    fig.tight_layout()
     fig.savefig(output_filename)
 
     return fig
