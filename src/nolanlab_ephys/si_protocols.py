@@ -11,6 +11,7 @@ Understanding the details of these require understanding SpikeInterface. Here's 
 from pathlib import Path
 
 import spikeinterface.full as si
+import probeinterface as pi
 from spikeinterface.curation.curation_tools import resolve_merging_graph
 from spikeinterface.curation import validate_curation_dict
 
@@ -191,6 +192,18 @@ generic_postprocessing = {
     "template_metrics": {},  # {'include_multi_channel_metrics': True, 'peak_sign': 'both'},
 }
 
+def attach_tetrode_to_recording(recording):
+
+    tetrode_group = pi.ProbeGroup()
+    for a in range(4):
+        one_tetrode = pi.generate_tetrode()
+        one_tetrode.move([a*250,0])
+        tetrode_group.add_probe(one_tetrode)
+
+    tetrode_group.set_global_device_channel_indices(range(16))
+    recording = recording.set_probegroup(tetrode_group)
+
+    return recording
 
 def compute_automated_curation(analyzer, model_path, curation_output_path):
     """
