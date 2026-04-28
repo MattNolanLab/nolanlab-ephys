@@ -147,12 +147,12 @@ protocols = {
 
     'lupinA': {
         'preprocessing': {
-            'apply_motion_correction': False
-
         },
         'sorting': {
-            'sorter_name': 'tridesclous2',
+            'sorter_name': 'lupin',
             'cache_preprocessing_mode': 'folder',
+            'apply_motion_correction': False
+
         },
         'preprocessing_for_analyzer': {
             'bandpass_filter': {},
@@ -162,11 +162,11 @@ protocols = {
 
     'lupinB': {
         'preprocessing': {
-            'apply_motion_correction': True,
         },
         'sorting': {
-            'sorter_name': 'tridesclous2',
+            'sorter_name': 'lupin',
             'cache_preprocessing_mode': 'folder',
+            'apply_motion_correction': True,
         },
         'preprocessing_for_analyzer': {
             'bandpass_filter': {},
