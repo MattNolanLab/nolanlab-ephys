@@ -38,7 +38,7 @@ from pathlib import Path
 import spikeinterface.full as si
 
 from nolanlab_ephys.sort import do_sorting_pipeline_concat_then_split
-from nolanlab_ephys.utils import get_recording_folders, chronologize_paths
+from nolanlab_ephys.lab_utils import get_recording_folders, chronologize_paths
 
 
 def main():
@@ -96,6 +96,7 @@ def main():
         sorting_output_folder=f"sorting_output_{mouse_string}_{day_string}_{protocol}",
         n_jobs=n_jobs,
     )
+
 
 def get_args():
 
