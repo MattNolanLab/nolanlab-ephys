@@ -2,14 +2,18 @@ from datetime import datetime
 
 import spikeinterface.full as si
 
-from nolanlab_ephys.spikeinterface_tools import protocols, generic_postprocessing, check_protocol_dict
+from nolanlab_ephys.spikeinterface_tools import (
+    protocols,
+    generic_postprocessing,
+    check_protocol_dict,
+)
 
 
 def do_sorting_pipeline_concat_then_split(
     recordings,
     analyzer_paths,
     protocol: str = "",
-    protocol_info = None,
+    protocol_info=None,
     sorting_output_folder=None,
     n_jobs=1,
 ):
@@ -45,9 +49,15 @@ def do_sorting_pipeline_concat_then_split(
         raise ValueError("length of `recording_paths` not equal to length of `analyzer_paths`")
 
     if len(protocol) != 0 and protocol_info is not None:
-        raise ValueError(f"You can either pass a `protocol` or `protocol_info`, but not both. You have passed `protocol = {protocol}` and `protocol_info = {protocol_info}`")
+        raise ValueError(
+            f"You can either pass a `protocol` or `protocol_info`, but not both. You have passed `protocol = {protocol}` and `protocol_info = {protocol_info}`"
+        )
 
     if protocol_info is None:
+        if protocol not in protocols:
+            raise ValueError(
+                f"The protocol {protocol} is not found in protocols. Available protocols are: {list(protocols.keys())}"
+            )
         protocol_info = protocols[protocol]
 
     check_protocol_dict(protocol_info)
@@ -59,9 +69,7 @@ def do_sorting_pipeline_concat_then_split(
     concatenated_recording = si.concatenate_recordings(recordings)
 
     preprocessing_pipeline = si.PreprocessingPipeline(protocol_info["preprocessing"])
-    pp_recording = si.apply_preprocessing_pipeline(
-        concatenated_recording, preprocessing_pipeline
-    )
+    pp_recording = si.apply_preprocessing_pipeline(concatenated_recording, preprocessing_pipeline)
     sorting = si.run_sorter(
         recording=pp_recording,
         **protocol_info["sorting"],
@@ -82,7 +90,9 @@ def do_sorting_pipeline_concat_then_split(
         )
         cumulative_samples += recording_total_samples
 
-        pipeline_for_analyzer = si.PreprocessingPipeline(protocol_info["preprocessing_for_analyzer"])
+        pipeline_for_analyzer = si.PreprocessingPipeline(
+            protocol_info["preprocessing_for_analyzer"]
+        )
         preprocessed_recording_for_analyzer = si.apply_preprocessing_pipeline(
             recording, pipeline_for_analyzer
         )
@@ -105,7 +115,7 @@ def do_sorting_pipeline_concat(
     recordings,
     analyzer_path,
     protocol: str = "",
-    protocol_info = None,
+    protocol_info=None,
     sorting_output_folder=None,
     n_jobs=1,
 ):
@@ -138,9 +148,15 @@ def do_sorting_pipeline_concat(
     # do some checks on the input
 
     if len(protocol) != 0 and protocol_info is not None:
-        raise ValueError(f"You can either pass a `protocol` or `protocol_info`, but not both. You have passed `protocol = {protocol}` and `protocol_info = {protocol_info}`")
+        raise ValueError(
+            f"You can either pass a `protocol` or `protocol_info`, but not both. You have passed `protocol = {protocol}` and `protocol_info = {protocol_info}`"
+        )
 
     if protocol_info is None:
+        if protocol not in protocols:
+            raise ValueError(
+                f"The protocol {protocol} is not found in protocols. Available protocols are: {list(protocols.keys())}"
+            )
         protocol_info = protocols[protocol]
 
     check_protocol_dict(protocol_info)
@@ -173,7 +189,7 @@ def do_sorting_pipeline_concat(
         recording=preprocessed_recording_for_analyzer,
         sorting=sorting,
         folder=analyzer_path,
-        format="zarr",
+        format="binary_folder",
         peak_sign="both",
         radius_um=70,
     )

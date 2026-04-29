@@ -108,7 +108,7 @@ def get_args():
     parser.add_argument("protocol")
     parser.add_argument("--data_folder", default="/home/nolanlab/Work/Harry_Project/data/")
     parser.add_argument("--deriv_folder", default="/home/nolanlab/Work/Harry_Project/derivatives/")
-    parser.add_argument("--n_jobs", default=8)
+    parser.add_argument("--n_jobs", default=8, type=int)
 
     return parser.parse_args()
 
