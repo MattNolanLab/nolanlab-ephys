@@ -15,6 +15,8 @@ Protocols we use for spike sorting. Each protocol has a unique name of the form 
 Understanding the details of these require understanding SpikeInterface. Here's a good place to start: https://spikeinterface.readthedocs.io/en/stable/get_started/quickstart.html
 """
 protocols = {
+
+    # used for chronic NeuroPixels recordings
     "kilosort4A": {
         "preprocessing": {
             "detect_and_remove_bad_channels": {"seed": 1205},
@@ -32,6 +34,8 @@ protocols = {
             "bandpass_filter": {},
         },
     },
+
+    # used for acute NeuroPixels recordings
     'kilosort4B': {
         'preprocessing': {
             'phase_shift': {},
@@ -47,6 +51,8 @@ protocols = {
             'bandpass_filter': {},
         },
     },
+
+    # used for tetrode recordings
     "mountainsort5A": {
         "preprocessing": {},
         "sorting": {
@@ -58,17 +64,8 @@ protocols = {
             "bandpass_filter": {},
         },
     },
-    "mountainsort5B": {
-        "preprocessing": {},
-        "sorting": {
-            "sorter_name": "mountainsort5",
-            "scheme": "3",
-        },
-        "preprocessing_for_analyzer": {
-            "common_reference": {},
-            "bandpass_filter": {},
-        },
-    },
+
+    # used for tetrode recordings
     "mountainsort4A": {
         "preprocessing": {},
         "sorting": {
@@ -79,6 +76,8 @@ protocols = {
             "bandpass_filter": {},
         },
     },
+
+    # A working NP pipeline for herdingspikes
     "herdingspikesA": {
         "preprocessing": {
             "bandpass_filter": {},
@@ -92,6 +91,8 @@ protocols = {
             "common_reference": {},
         },
     },
+
+    # A working NP pipeline for spykingcircus2, no motion correction
     "spykingcircus2A": {
         "preprocessing": {},
         "sorting": {
@@ -104,6 +105,8 @@ protocols = {
             "common_reference": {},
         },
     },
+
+    # A working NP pipeline for spykingcircus2, with motion correction
     'spykingcircus2B': {
         'preprocessing': {
         },
@@ -120,6 +123,8 @@ protocols = {
             'common_reference': {},
         },
     },
+
+    # A working NP pipeline for tridesclous2, no motion correction
     "tridesclous2A": {
         "preprocessing": {},
         "sorting": {
@@ -131,28 +136,30 @@ protocols = {
             "common_reference": {},
         },
     },
+
+    # A working NP pipeline for tridesclous2, with motion correction
     'tridesclous2B': {
         'preprocessing': {
+        },
+        'sorting': {
+            'sorter_name': 'tridesclous2',
+            'cache_preprocessing_mode': 'folder',
             'apply_motion_correction': True
         },
-        'sorting': {
-            'sorter_name': 'tridesclous2',
-            'cache_preprocessing_mode': 'folder',
-        },
         'preprocessing_for_analyzer': {
             'bandpass_filter': {},
             'common_reference': {},
         },
     },
 
+    # A working NP pipeline for lupin, no motion correction
     'lupinA': {
         'preprocessing': {
-            'apply_motion_correction': False
-
         },
         'sorting': {
             'sorter_name': 'tridesclous2',
             'cache_preprocessing_mode': 'folder',
+            'apply_motion_correction': False
         },
         'preprocessing_for_analyzer': {
             'bandpass_filter': {},
@@ -160,13 +167,14 @@ protocols = {
         },
     },
 
+    # A working NP pipeline for lupin, with motion correction
     'lupinB': {
         'preprocessing': {
-            'apply_motion_correction': True,
         },
         'sorting': {
-            'sorter_name': 'tridesclous2',
+            'sorter_name': 'lupin',
             'cache_preprocessing_mode': 'folder',
+            'apply_motion_correction': True,
         },
         'preprocessing_for_analyzer': {
             'bandpass_filter': {},
@@ -175,6 +183,8 @@ protocols = {
     },
 }
 
+# These are the postprocessing extensions we compute by default
+# Read more: https://spikeinterface.readthedocs.io/en/stable/modules/postprocessing.html
 generic_postprocessing = {
     "unit_locations": {},
     "random_spikes": {},
