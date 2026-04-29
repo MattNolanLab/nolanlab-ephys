@@ -16,6 +16,8 @@ Protocols we use for spike sorting. Each protocol has a unique name of the form 
 Understanding the details of these require understanding SpikeInterface. Here's a good place to start: https://spikeinterface.readthedocs.io/en/stable/get_started/quickstart.html
 """
 protocols = {
+
+    # used for chronic NeuroPixels recordings
     "kilosort4A": {
         "preprocessing": {
             "detect_and_remove_bad_channels": {"seed": 1205},
@@ -33,6 +35,8 @@ protocols = {
             "bandpass_filter": {},
         },
     },
+
+    # used for acute NeuroPixels recordings
     'kilosort4B': {
         'preprocessing': {
             'phase_shift': {},
@@ -48,6 +52,8 @@ protocols = {
             'bandpass_filter': {},
         },
     },
+
+    # used for tetrode recordings
     "mountainsort5A": {
         "preprocessing": {},
         "sorting": {
@@ -59,17 +65,8 @@ protocols = {
             "bandpass_filter": {},
         },
     },
-    "mountainsort5B": {
-        "preprocessing": {},
-        "sorting": {
-            "sorter_name": "mountainsort5",
-            "scheme": "3",
-        },
-        "preprocessing_for_analyzer": {
-            "common_reference": {},
-            "bandpass_filter": {},
-        },
-    },
+
+    # used for tetrode recordings
     "mountainsort4A": {
         "preprocessing": {},
         "sorting": {
@@ -80,6 +77,8 @@ protocols = {
             "bandpass_filter": {},
         },
     },
+
+    # A working NP pipeline for herdingspikes
     "herdingspikesA": {
         "preprocessing": {
             "bandpass_filter": {},
@@ -93,6 +92,8 @@ protocols = {
             "common_reference": {},
         },
     },
+
+    # A working NP pipeline for spykingcircus2, no motion correction
     "spykingcircus2A": {
         "preprocessing": {},
         "sorting": {
@@ -105,6 +106,8 @@ protocols = {
             "common_reference": {},
         },
     },
+
+    # A working NP pipeline for spykingcircus2, with motion correction
     'spykingcircus2B': {
         'preprocessing': {
         },
@@ -121,6 +124,8 @@ protocols = {
             'common_reference': {},
         },
     },
+
+    # A working NP pipeline for tridesclous2, no motion correction
     "tridesclous2A": {
         "preprocessing": {},
         "sorting": {
@@ -132,13 +137,15 @@ protocols = {
             "common_reference": {},
         },
     },
+
+    # A working NP pipeline for tridesclous2, with motion correction
     'tridesclous2B': {
         'preprocessing': {
-            'apply_motion_correction': True
         },
         'sorting': {
             'sorter_name': 'tridesclous2',
             'cache_preprocessing_mode': 'folder',
+            'apply_motion_correction': True
         },
         'preprocessing_for_analyzer': {
             'bandpass_filter': {},
@@ -146,6 +153,7 @@ protocols = {
         },
     },
 
+    # A working NP pipeline for lupin, no motion correction
     'lupinA': {
         'preprocessing': {
         },
@@ -153,7 +161,6 @@ protocols = {
             'sorter_name': 'lupin',
             'cache_preprocessing_mode': 'folder',
             'apply_motion_correction': False
-
         },
         'preprocessing_for_analyzer': {
             'bandpass_filter': {},
@@ -161,6 +168,7 @@ protocols = {
         },
     },
 
+    # A working NP pipeline for lupin, with motion correction
     'lupinB': {
         'preprocessing': {
         },
@@ -176,6 +184,8 @@ protocols = {
     },
 }
 
+# These are the postprocessing extensions we compute by default
+# Read more: https://spikeinterface.readthedocs.io/en/stable/modules/postprocessing.html
 generic_postprocessing = {
     "unit_locations": {},
     "random_spikes": {},
@@ -192,18 +202,16 @@ generic_postprocessing = {
     "template_metrics": {},
 }
 
-def attach_tetrode_to_recording(recording):
+def check_protocol_dict(protocol_info):
 
-    tetrode_group = pi.ProbeGroup()
-    for a in range(4):
-        one_tetrode = pi.generate_tetrode()
-        one_tetrode.move([a*250,0])
-        tetrode_group.add_probe(one_tetrode)
+    for essential_key in ["preprocessing", "sorting", "preprocessing_for_analyzer"]:
+        if essential_key not in protocol_info:
+            raise ValueError(f"`protocol_info` must contain key '{essential_key}'.")
+        else:
+            if not isinstance(protocol_info[essential_key], dict):
+                raise ValueError(f"protocol_info['{essential_key}'] must be a dict. Currently it is equal to `{protocol_info[essential_key]}`")
 
-    tetrode_group.set_global_device_channel_indices(range(16))
-    recording = recording.set_probegroup(tetrode_group)
-
-    return recording
+    return
 
 def compute_automated_curation(analyzer, model_path, curation_output_path):
     """

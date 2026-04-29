@@ -38,7 +38,7 @@ from pathlib import Path
 import spikeinterface.full as si
 
 from nolanlab_ephys.sort import do_sorting_pipeline_concat_then_split
-from nolanlab_ephys.utils import get_recording_folders, chronologize_paths
+from nolanlab_ephys.lab_utils import get_recording_folders, chronologize_paths
 
 
 def main():
@@ -46,12 +46,10 @@ def main():
     parsed_args = get_args()
 
     mouse = parsed_args.mouse
-    if mouse.isdigit():
-        mouse = int(mouse)
-
     day = parsed_args.day
-    if day.isdigit():
-        day = int(day)
+
+    mouse_string = f"{mouse:02d}"
+    day_string = f"{mouse:02d}"
 
     n_jobs = parsed_args.n_jobs
     protocol = parsed_args.protocol
@@ -68,23 +66,23 @@ def main():
     if not deriv_folder.is_dir():
         raise FileNotFoundError(f"`deriv_folder` {deriv_folder} does not exist, or is not mounted.")
 
-    mouseday_deriv_folder = deriv_folder / f"M{mouse}/D{day}"
+    mouseday_deriv_folder = deriv_folder / f"M{mouse_string}/D{day_string}"
     mouseday_deriv_folder.mkdir(parents=True, exist_ok=True)
 
     recording_paths = chronologize_paths(
         get_recording_folders(data_folder=data_folder, mouse=mouse, day=day, sessions=sessions)
     )
-    print(f"\nWill sort the following recordings:")
+    print("\nWill sort the following recordings:")
     for recording_path in recording_paths:
         print(f"  - {recording_path}")
 
     analyzer_paths = [
         deriv_folder
-        / f"M{mouse}/D{day}/{session}/{protocol}/sub-{mouse}_day-{day}_ses-{session}_srt-{protocol}_analyzer"
+        / f"M{mouse_string}/D{day_string}/{session}/{protocol}/sub-{mouse_string}_day-{day_string}_ses-{session}_srt-{protocol}_analyzer"
         for session in sessions
     ]
 
-    print(f"\nAnd save the output at:")
+    print("\nAnd save the output at:")
     for analyzer_path in analyzer_paths:
         print(f"  - {analyzer_path}")
     print()
@@ -94,22 +92,23 @@ def main():
     do_sorting_pipeline_concat_then_split(
         recordings,
         analyzer_paths,
-        protocol,
-        sorting_output_folder=f"sorting_output_{mouse}_{day}_{protocol}",
+        protocol=protocol,
+        sorting_output_folder=f"sorting_output_{mouse_string}_{day_string}_{protocol}",
         n_jobs=n_jobs,
     )
+
 
 def get_args():
 
     parser = ArgumentParser()
 
-    parser.add_argument("mouse")
-    parser.add_argument("day")
+    parser.add_argument("mouse", type=int)
+    parser.add_argument("day", type=int)
     parser.add_argument("sessions")
     parser.add_argument("protocol")
     parser.add_argument("--data_folder", default="/home/nolanlab/Work/Harry_Project/data/")
     parser.add_argument("--deriv_folder", default="/home/nolanlab/Work/Harry_Project/derivatives/")
-    parser.add_argument("--n_jobs", default=8)
+    parser.add_argument("--n_jobs", default=8, type=int)
 
     return parser.parse_args()
 
