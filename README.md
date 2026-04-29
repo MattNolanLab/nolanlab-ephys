@@ -41,6 +41,7 @@ This repo represents a _minimum viable product_: it contains a working spike sor
 - Bri : https://github.com/chrishalcrow/nolanlab-ephys/tree/main/scripts/bri
 - Teris: https://github.com/chrishalcrow/nolanlab-ephys/tree/main/scripts/teris
 - Junji: https://github.com/chrishalcrow/nolanlab-ephys/tree/main/scripts/junji
+- Sorting IBL data from DANDI: https://github.com/chrishalcrow/nolanlab-ephys/blob/main/scripts/chris/sort_ibl_data.py
 
 Note that the modifications are contained to the scripts folder. The source folder is identical to the source folder here.
 
