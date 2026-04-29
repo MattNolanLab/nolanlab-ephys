@@ -191,6 +191,16 @@ generic_postprocessing = {
     "template_metrics": {},
 }
 
+def check_protocol_dict(protocol_info):
+
+    for essential_key in ["preprocessing", "sorting", "preprocessing_for_analyzer"]:
+        if essential_key not in protocol_info:
+            raise ValueError(f"`protocol_info` must contain key '{essential_key}'.")
+        else:
+            if not isinstance(protocol_info[essential_key], dict):
+                raise ValueError(f"protocol_info['{essential_key}'] must be a dict. Currently it is equal to `{protocol_info[essential_key]}`")
+
+    return
 
 def compute_automated_curation(analyzer, model_path, curation_output_path):
     """

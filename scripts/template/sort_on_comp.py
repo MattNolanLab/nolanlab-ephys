@@ -94,7 +94,7 @@ def main():
     do_sorting_pipeline_concat_then_split(
         recordings,
         analyzer_paths,
-        protocol,
+        protocol=protocol,
         sorting_output_folder=f"sorting_output_{mouse}_{day}_{protocol}",
         n_jobs=n_jobs,
     )
