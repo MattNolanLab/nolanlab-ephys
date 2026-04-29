@@ -1,3 +1,8 @@
+"""
+Tools to compute and plot information related to the quality of your recording. 
+These are specifically designed for NeuroPixels probes.
+"""
+
 import matplotlib.pyplot as plt
 import numpy as np
 from spikeinterface.core import get_noise_levels
@@ -5,6 +10,10 @@ from spikeinterface.widgets import plot_motion, plot_drift_raster_map
 from spikeinterface.curation import bombcell_label_units
 
 def compute_noise_across_time(preprocessed_recording):
+    """
+    Computes the noise on each channel, for each minute of the recording.
+    A good quality recording should have a stable noise profile over time.
+    """
 
     channel_noise_per_minute = []   
     minutes_in_recording = int(np.floor(preprocessed_recording.get_duration()/60))
@@ -16,6 +25,9 @@ def compute_noise_across_time(preprocessed_recording):
     return channel_noise_per_minute
 
 def plot_noise_across_time(channel_noise_per_minute, output_filename):
+    """
+    Plots the output from `compute_noise_across_time`
+    """
 
     fig, ax = plt.subplots(figsize=(6,3))
     
@@ -33,6 +45,9 @@ def plot_noise_across_time(channel_noise_per_minute, output_filename):
     return fig
 
 def plot_motion_vector(motion, output_filename):
+    """
+    Plots motion vector (estimated motion of probe over time), computed in `spikeinterface.compute_motion`
+    """
 
     fig = plot_motion(motion)
     fig.figure.savefig(output_filename)
@@ -41,6 +56,9 @@ def plot_motion_vector(motion, output_filename):
 
 
 def plot_drift_map(motion_info, output_filename):
+    """
+    Plots drift map (detected spikes over time), computed in `spikeinterface.compute_motion`
+    """
 
     fig = plot_drift_raster_map(
         peaks = motion_info['peaks'], 
@@ -53,6 +71,13 @@ def plot_drift_map(motion_info, output_filename):
     return fig
 
 def compute_noise_and_good_units(analyzer):
+    """
+    Computes depth-related quantities.
+      - The depth of "good" and "mua" units
+      - The noise profile as a function of depth
+    """
+
+    distance_between_shanks = 250
 
     unit_locations = analyzer.get_extension('unit_locations').get_data()
     bombcell_labels = bombcell_label_units(analyzer)['bombcell_label'].values
@@ -64,7 +89,7 @@ def compute_noise_and_good_units(analyzer):
     mua_units_per_shank = {'0': [], '1': [], '2': [], '3':[]}
 
     for bombcell_label, unit_location in zip(bombcell_labels, unit_locations):
-        closest_shank = np.argmin(np.array([abs(unit_location[0] - 250*a) for a in range(4)]))
+        closest_shank = np.argmin(np.array([abs(unit_location[0] - distance_between_shanks*a) for a in range(4)]))
         if bombcell_label == 'good':
             good_units_per_shank[str(closest_shank)].append(unit_location[1])
         elif bombcell_label == 'mua':
@@ -74,13 +99,16 @@ def compute_noise_and_good_units(analyzer):
     noise_per_shank = {'0': [], '1': [], '2': [], '3':[]}
     noise_levels = analyzer.get_extension('noise_levels').get_data()
     for shank_id, channel_location, noise_level in zip(analyzer.get_probe().shank_ids, analyzer.get_channel_locations(), noise_levels):
-        if (channel_location[0] % 250) == 0:
+        if (channel_location[0] % distance_between_shanks) == 0:
             y_locations_per_shank[shank_id].append(channel_location[1])
             noise_per_shank[shank_id].append(noise_level)
 
     return unique_shanks, noise_per_shank, y_locations_per_shank, mua_units_per_shank, good_units_per_shank
 
 def plot_noise_and_good_units(unique_shanks, noise_per_shank, y_locations_per_shank, mua_units_per_shank, good_units_per_shank, output_filename):
+    """
+    Plots the output from `compute_noise_and_good_units`.
+    """
 
     number_of_shanks = len(unique_shanks)
     fig, axes = plt.subplots(1,2*number_of_shanks, figsize=(4*number_of_shanks, 4))
