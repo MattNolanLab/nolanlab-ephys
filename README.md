@@ -53,7 +53,7 @@ git clone https://github.com/your_GitHub_username/nolanlab-ephys
 cd nolanlab-ephys
 ```
 
-Then you can run anything you'd like using [`uv`](https://docs.astral.sh/uv/getting-started/installation/) e.g.
+You can immediately run code using [`uv`](https://docs.astral.sh/uv/getting-started/installation/). The most important script is the `sort_on_comp.py`, which does the actual spike sorting. To run this script, do this:
 
 ```
 uv run scripts/template/sort_on_comp.py 25 25 VR kilosort4 --data_folder /path/to/data/folder --deriv_folder /path/to/deriv/folder
@@ -61,7 +61,7 @@ uv run scripts/template/sort_on_comp.py 25 25 VR kilosort4 --data_folder /path/t
 
 Read more about the `sort_on_comp.py` script by opening the file: there's lots of documentation inside.
 
-The different spike sorting protocols can be found in `src/nolanlab_ephys/si_protocols.py`.
+The different spike sorting protocols can be found in `src/nolanlab_ephys/spikeinterface_tools.py`.
 
 You can visualise the results using e.g.
 
@@ -71,7 +71,9 @@ uv run scripts/template/visualise_results.py 25 25 VR kilosort4 --deriv_folder /
 
 ## Using on EDDIE
 
-The package is designed to be used on the Nolan Lab's data on your local computer or on EDDIE, the Edinburgh supercomputer. To run a spike sorting pipeline on Eddie, do the following. First, log on to EDDIE and get a login node:
+The package is designed to be used on the Nolan Lab's data on your local computer or on EDDIE, the Edinburgh supercomputer. There are more extensive information about using EDDIE here: https://chrishalcrow.github.io/uv_on_eddie/
+
+In brief, to run a spike sorting pipeline on Eddie, do the following. First, log on to EDDIE and get a login node:
 
 ``` bash
 ssh edinburgh_username@eddie.ecdf.ed.ac.uk
@@ -87,7 +89,7 @@ git clone https://github.com/MattNolanLab/nolanlab-ephys.git
 cd nolanlab-ephys
 ```
 
-Now you can run some scripts! Each script is kept in `scripts/experimenter_name/blah.py`. Each step of each experimenters pipeline bespoke script. For it to run, it needs to know some info. For spike sorting it needs to know the: mouse, day, sessions, sorting protocol, folder to put the data on the scratch, folder to put the derivatives on the scratch. Here's an example on my login (note: you need to change chalcrow to something else):
+Now you can run some scripts! Here's an example on my login (note: you need to change chalcrow to something else):
 
 ``` bash
 uv run scripts/template/sort_on_eddie.py 25 20 OF1,VR,OF2 kilosort4A --data_folder /exports/eddie/scratch/chalcrow/wolf/data/ --deriv_folder /exports/eddie/scratch/chalcrow/wolf/derivatives
