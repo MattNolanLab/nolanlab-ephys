@@ -219,4 +219,4 @@ def chronologize_paths(recording_paths):
     time_dates = [s.split("-", 1)[-1] for s in basenames]
     # reorganise recording_paths based on np.argsort(time_dates)
     recording_paths = np.array(recording_paths)[np.argsort(time_dates)]
-    return recording_paths.tolist()
+    return list(recording_paths)

@@ -74,7 +74,7 @@ def main():
     recording_paths = chronologize_paths(
         get_recording_folders(data_folder=data_folder, mouse=mouse, day=day, sessions=sessions)
     )
-    print(f"\nWill sort the following recordings:")
+    print("\nWill sort the following recordings:")
     for recording_path in recording_paths:
         print(f"  - {recording_path}")
 
@@ -84,7 +84,7 @@ def main():
         for session in sessions
     ]
 
-    print(f"\nAnd save the output at:")
+    print("\nAnd save the output at:")
     for analyzer_path in analyzer_paths:
         print(f"  - {analyzer_path}")
     print()
