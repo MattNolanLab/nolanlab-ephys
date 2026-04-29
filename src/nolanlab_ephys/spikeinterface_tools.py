@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import spikeinterface.full as si
-import probeinterface as pi
 from spikeinterface.curation.curation_tools import resolve_merging_graph
 from spikeinterface.curation import validate_curation_dict
 
@@ -158,7 +157,7 @@ protocols = {
         'preprocessing': {
         },
         'sorting': {
-            'sorter_name': 'lupin',
+            'sorter_name': 'tridesclous2',
             'cache_preprocessing_mode': 'folder',
             'apply_motion_correction': False
         },
