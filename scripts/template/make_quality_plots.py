@@ -3,7 +3,7 @@ This script creates some quality control plots from raw Neuropixels ephys data.
 
 It can be called from the command line. An example:
 
-uv run quality_control.py --mouse 6 --day 12 --sessions OF1,VR,OF2 --data_folder /home/nolanlab/Work/Harry_Project/data/ --deriv_folder /home/nolanlab/Work/Harry_Project/derivatives/
+uv run quality_control.py 6 12 OF1,VR,OF2 kilosort4A --data_folder /home/nolanlab/Work/Harry_Project/data/ --deriv_folder /home/nolanlab/Work/Harry_Project/derivatives/
 
 Computes and plots:
   - noise-vs-channel across time
