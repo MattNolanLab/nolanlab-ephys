@@ -7,7 +7,7 @@ This script is the pipeline step:
 
 It can be called from the command line. An example:
 
-uv run sort_on_comp.py --mouse 6 --day 12 --sessions OF1,VR1,OF2 --protocols kilosort4A --data_folder /home/nolanlab/Work/Harry_Project/data/ --deriv_folder /home/nolanlab/Work/Harry_Project/derivatives/
+uv run sort_on_comp.py 6 12 OF1,VR1,OF2 kilosort4A --data_folder /home/nolanlab/Work/Harry_Project/data/ --deriv_folder /home/nolanlab/Work/Harry_Project/derivatives/
 
 This will take the ephys data for mouse "6" on day "12" for the three session types "OF1", "VR1" and "OF2",
 and sort them using protocol "kilosort4A", as described in `nolanlab-ephys/src/nolanlab_ephy/spikeinterface_tools.py`.
@@ -72,6 +72,9 @@ def main():
     recording_paths = chronologize_paths(
         get_recording_folders(data_folder=data_folder, mouse=mouse, day=day, sessions=sessions)
     )
+    if len(recording_paths) == 0:
+        raise FileExistsError(f'Did not find any recording folders in {data_folder}')
+    
     print("\nWill sort the following recordings:")
     for recording_path in recording_paths:
         print(f"  - {recording_path}")
