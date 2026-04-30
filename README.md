@@ -1,6 +1,6 @@
 # Nolanlab Ephys
 
-This is the main repo for processing ephys data in the Nolan Lab. The pipeline step takes in raw ephys data and outputs a SpikeInterface sorting analyzer:
+This is the main repo for processing ephys data in the Nolan Lab. The pipeline step takes in raw ephys data and outputs a [SpikeInterface](https://github.com/SpikeInterface/spikeinterface) [sorting analyzer](https://spikeinterface.readthedocs.io/en/stable/modules/postprocessing.html):
 
  ![An ephys analysis pipeline](ephys_pipeline.png)
 
