@@ -18,16 +18,21 @@ def compute_noise_across_time(preprocessed_recording):
 
     sampling_frequency = int(np.round(preprocessed_recording.get_sampling_frequency()))
     channel_noise_per_minute = []
+
     minutes_in_recording = int(np.floor(preprocessed_recording.get_duration() / 60))
     for minute in range(minutes_in_recording):
+        start_frame = sampling_frequency * 60 * minute
+        end_frame = sampling_frequency * 60 * (minute + 1)
+
         one_minute_recording = preprocessed_recording.frame_slice(
-            start_frame=sampling_frequency * 60 * minute,
-            end_frame=sampling_frequency * 60 * (minute + 1),
+            start_frame=start_frame, end_frame=end_frame
         )
+
         noise = get_noise_levels(one_minute_recording, method="rms")
         channel_noise_per_minute.append(noise)
 
-    return channel_noise_per_minute
+    channel_noise_per_minute_array = np.array(channel_noise_per_minute)
+    return channel_noise_per_minute_array
 
 
 def plot_noise_across_time(channel_noise_per_minute, output_filename):

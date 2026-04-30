@@ -66,8 +66,18 @@ def main():
     data_folder = Path(parsed_args.data_folder)
     deriv_folder = Path(parsed_args.deriv_folder)
 
+    if not data_folder.is_dir():
+        raise FileNotFoundError(f"`data_folder` {data_folder} does not exist, or is not mounted.")
+
+    if not deriv_folder.is_dir():
+        raise FileNotFoundError(f"`deriv_folder` {deriv_folder} does not exist, or is not mounted.")
+
     mouseday_deriv_folder = deriv_folder / f"M{mouse}/D{day}"
-    mouseday_deriv_folder.mkdir(parents=True, exist_ok=True)
+
+    if not mouseday_deriv_folder.is_dir():
+        raise FileNotFoundError(
+            f"mouseday_deriv_folder {mouseday_deriv_folder} does not exist, or is not mounted."
+        )
 
     recording_paths = chronologize_paths(
         get_recording_folders(data_folder=data_folder, mouse=mouse, day=day, sessions=sessions)
@@ -79,6 +89,9 @@ def main():
         / f"{session}/{protocol}/sub-{mouse_string}_day-{day_string}_ses-{session}_srt-{protocol}_analyzer.zarr"
         for session in sessions
     ]
+
+    if len(recording_paths) != len(analyzer_paths):
+        raise ValueError("length of `recording_paths` not equal to length of `analyzer_paths`")
 
     for session, recording_path, analyzer_path in zip(
         sessions, recording_paths, analyzer_paths, strict=True
@@ -92,10 +105,15 @@ def main():
         )
         quality_plots_folder.mkdir(parents=True, exist_ok=True)
 
+        # noise across time
         noise_across_time_filename = (
             quality_plots_folder
             / f"sub-{mouse_string}_day-{day_string}_type-{session}_noise_across_time.png"
         )
+        channel_noise_per_minute = compute_noise_across_time(pp_recording)
+        plot_noise_across_time(channel_noise_per_minute, noise_across_time_filename)
+
+        # motion across time
         motion_vector_filename = (
             quality_plots_folder
             / f"sub-{mouse_string}_day-{day_string}_type-{session}_motion_vector.png"
@@ -104,14 +122,6 @@ def main():
             quality_plots_folder
             / f"sub-{mouse_string}_day-{day_string}_type-{session}_drift_map.png"
         )
-        noise_and_good_units_filename = (
-            quality_plots_folder
-            / f"sub-{mouse_string}_day-{day_string}_type-{session}_noise_and_good_units.png"
-        )
-
-        channel_noise_per_minute = compute_noise_across_time(pp_recording)
-        plot_noise_across_time(channel_noise_per_minute, noise_across_time_filename)
-
         motion, motion_info = si.compute_motion(
             pp_recording,
             preset="nonrigid_fast_and_accurate",
@@ -121,19 +131,20 @@ def main():
         plot_motion_vector(motion, motion_vector_filename)
         plot_drift_map(motion_info, drift_map_filename)
 
-        (
-            unique_shanks,
-            noise_per_shank,
-            y_locations_per_shank,
-            mua_units_per_shank,
-            good_units_per_shank,
-        ) = compute_noise_and_good_units(analyzer)
+        # noise and good units along probe
+        noise_and_good_units_filename = (
+            quality_plots_folder
+            / f"sub-{mouse_string}_day-{day_string}_type-{session}_noise_and_good_units.png"
+        )
+        unique_shanks, noise_per_shank, y_locs_per_shank, mua_per_shank, good_per_shank = (
+            compute_noise_and_good_units(analyzer)
+        )
         plot_noise_and_good_units(
             unique_shanks,
             noise_per_shank,
-            y_locations_per_shank,
-            mua_units_per_shank,
-            good_units_per_shank,
+            y_locs_per_shank,
+            mua_per_shank,
+            good_per_shank,
             noise_and_good_units_filename,
         )
 
