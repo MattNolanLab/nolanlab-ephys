@@ -56,7 +56,7 @@ def main():
     day = parsed_args.day
 
     mouse_string = f"{mouse:02d}"
-    day_string = f"{mouse:02d}"
+    day_string = f"{day:02d}"
 
     protocol = parsed_args.protocol
 
