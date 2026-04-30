@@ -83,7 +83,7 @@ def get_recording_folders(data_folder, mouse, day, sessions=[]):
     folders_called_session_in_data_folder = []
     for session_type in subfolder_names:
         folders_called_session_in_data_folder = folders_called_session_in_data_folder + list(
-            Path(data_path).glob(session_type)
+            Path(data_path).rglob(session_type, case_sensitive=False)
         )
 
     if len(folders_called_session_in_data_folder) > 0:
