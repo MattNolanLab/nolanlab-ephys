@@ -47,6 +47,8 @@ Note that the modifications are contained to the scripts folder. The source fold
 
 ## Use on your own computer
 
+First step: get something working on your computer. Using either your own data or someone else's that is on the DataStore.
+
 We recommend that you make a fork (your own personal copy) of this repo by clicking `Fork -> Create new fork` above. To begin using the fork on your computer, please download (clone) the repo from github. Then enter the directory and start using the codebase!
 
 ```
@@ -54,7 +56,7 @@ git clone https://github.com/your_GitHub_username/nolanlab-ephys
 cd nolanlab-ephys
 ```
 
-You can immediately run code using [`uv`](https://docs.astral.sh/uv/getting-started/installation/). The most important script is the `sort_on_comp.py`, which does the actual spike sorting. To run this script, do this:
+You can immediately run code using [`uv`](https://docs.astral.sh/uv/getting-started/installation/). The most important script is `sort_on_comp.py`, which does the actual spike sorting. To run this script, do this:
 
 ```
 uv run scripts/template/sort_on_comp.py 25 25 VR kilosort4 --data_folder /path/to/data/folder --deriv_folder /path/to/deriv/folder
@@ -72,7 +74,7 @@ uv run scripts/template/visualise_results.py 25 25 VR kilosort4 --deriv_folder /
 
 ## Using on EDDIE
 
-The package is designed to be used on the Nolan Lab's data on your local computer or on EDDIE, the Edinburgh supercomputer. There are more extensive information about using EDDIE here: https://chrishalcrow.github.io/uv_on_eddie/
+The package is designed to be used on the Nolan Lab's data on your local computer or on EDDIE, the Edinburgh supercomputer. There is more extensive information about using EDDIE here: https://chrishalcrow.github.io/uv_on_eddie/
 
 In brief, to run a spike sorting pipeline on Eddie, do the following. First, log on to EDDIE and get a login node:
 
@@ -93,5 +95,5 @@ cd nolanlab-ephys
 Now you can run some scripts! Here's an example on my login (note: you need to change chalcrow to something else):
 
 ``` bash
-uv run scripts/template/sort_on_eddie.py 25 20 OF1,VR,OF2 kilosort4A --data_folder /exports/eddie/scratch/chalcrow/wolf/data/ --deriv_folder /exports/eddie/scratch/chalcrow/wolf/derivatives
+uv run scripts/template/sort_on_eddie.py 25 25 OF1,VR,OF2 kilosort4A --data_folder /exports/eddie/scratch/chalcrow/harry/data/ --deriv_folder /exports/eddie/scratch/chalcrow/harry/derivatives
 ```
