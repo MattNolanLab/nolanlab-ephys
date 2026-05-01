@@ -47,7 +47,7 @@ Note that the modifications are contained to the scripts folder. The source fold
 
 ## Use on your own computer
 
-First step: get something working on your computer. Using either your own data or someone else's that is on the DataStore.
+First step: get something working on your computer using either your own data or someone else's that is on the DataStore. You could even try it on some openly available data from DANDI. E.g. the code in [this fork](https://github.com/chrishalcrow/nolanlab-ephys/blob/main/scripts/chris/sort_ibl_data.py) sorts [this data](https://dandiarchive.org/dandiset/000409/0.260309.1324/files?location=sub-UCLA034&page=1).
 
 We recommend that you make a fork (your own personal copy) of this repo by clicking `Fork -> Create new fork` above. To begin using the fork on your computer, please download (clone) the repo from github. Then enter the directory and start using the codebase!
 
