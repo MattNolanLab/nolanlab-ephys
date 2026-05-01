@@ -8,6 +8,7 @@ from nolanlab_ephys.spikeinterface_tools import (
     check_protocol_dict,
 )
 
+from nolanlab_ephys.pipeline import apply_preprocessing_pipeline
 
 def do_sorting_pipeline_concat_then_split(
     recordings,
@@ -69,7 +70,7 @@ def do_sorting_pipeline_concat_then_split(
     concatenated_recording = si.concatenate_recordings(recordings)
 
     preprocessing_pipeline = si.PreprocessingPipeline(protocol_info["preprocessing"])
-    pp_recording = si.apply_preprocessing_pipeline(concatenated_recording, preprocessing_pipeline)
+    pp_recording = apply_preprocessing_pipeline(concatenated_recording, preprocessing_pipeline)
     sorting = si.run_sorter(
         recording=pp_recording,
         **protocol_info["sorting"],
@@ -93,7 +94,7 @@ def do_sorting_pipeline_concat_then_split(
         pipeline_for_analyzer = si.PreprocessingPipeline(
             protocol_info["preprocessing_for_analyzer"]
         )
-        preprocessed_recording_for_analyzer = si.apply_preprocessing_pipeline(
+        preprocessed_recording_for_analyzer = apply_preprocessing_pipeline(
             recording, pipeline_for_analyzer
         )
 
@@ -167,7 +168,7 @@ def do_sorting_pipeline_concat(
 
     concatenated_recording = si.concatenate_recordings(recordings)
 
-    pp_recording = si.apply_preprocessing_pipeline(
+    pp_recording = apply_preprocessing_pipeline(
         concatenated_recording, protocol_info["preprocessing"]
     )
     sorting = si.run_sorter(
@@ -181,7 +182,7 @@ def do_sorting_pipeline_concat(
     # we do all our syncing assuming that t=0 is at the start of the ephys data
     concatenated_recording.segments[0].t_start = 0
 
-    preprocessed_recording_for_analyzer = si.apply_preprocessing_pipeline(
+    preprocessed_recording_for_analyzer = apply_preprocessing_pipeline(
         concatenated_recording, protocol_info["preprocessing_for_analyzer"]
     )
 
