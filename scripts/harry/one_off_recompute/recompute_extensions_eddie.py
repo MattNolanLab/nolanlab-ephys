@@ -13,7 +13,7 @@ def filepath_from_mouse_day_sessions(mouse, day, path_to_all_filepaths):
     sessions_filepaths = []
     
 
-    session_column = all_filepaths.query(f'mouse == {mouse} & day == {day}"')
+    session_column = all_filepaths.query(f'mouse == {mouse} & day == {day}')
     filepath = session_column['filepath'].values[0]
     sessions_filepaths.append(filepath)
 
