@@ -20,9 +20,9 @@ mouse = int(parser.parse_args().mouse)
 day = int(parser.parse_args().day)
 
 all_rec_samples = pd.read_csv("scripts/harry/resources/all_rec_samples_involving_mcvr.csv")
-samples = all_rec_samples.query(f'mouse == {mouse} & day == {day}')
+samples = all_rec_samples.query(f'mouse == {mouse} & date == {day}')
 
-one_samples, two_samples = samples[['one','two']].values[0]
+one_name, one_samples, two_name, two_samples = samples[['one_name', 'one_samples', 'two_name', 'two_samples']].values[0]
 
 print(one_samples, two_samples)
 
@@ -42,27 +42,27 @@ vr_recording = recording.frame_slice(start_frame=one_samples, end_frame=None)
 
 sortings = [of1_sorting, vr_sorting]
 recordings = [of1_recording, vr_recording]
-typs = []
+typs = [one_name, two_name]
 
-# for recording, sorting, typ in zip(recordings, sortings, typs):
+for recording, sorting, typ in zip(recordings, sortings, typs):
 
-#     # we do all our syncing assuming that t=0 is at the start of the ephys data
-#     recording._recording_segments[0].t_start = 0
+    # we do all our syncing assuming that t=0 is at the start of the ephys data
+    recording._recording_segments[0].t_start = 0
 
-#     analyzer_folder = deriv_folder / f"M{mouse:02d}/D{day:02d}/{typ.lower()}/kilosort4/sub-M{mouse:02d}_ses-D{day:02d}_typ-{typ}_srt-kilosort4_analyzer"
+    analyzer_folder = deriv_folder / f"M{mouse:02d}/D{day:02d}/{typ.lower()}/kilosort4/sub-M{mouse:02d}_ses-D{day:02d}_typ-{typ}_srt-kilosort4_analyzer"
 
-#     analyzer = si.create_sorting_analyzer(
-#         recording=recording,
-#         sorting=sorting, 
-#         folder = analyzer_folder,
-#         format = "zarr",
-#         peak_sign = "both",
-#         radius_um = 70,
-#         overwrite=True,
-#     )
+    analyzer = si.create_sorting_analyzer(
+        recording=recording,
+        sorting=sorting, 
+        folder = analyzer_folder,
+        format = "zarr",
+        peak_sign = "both",
+        radius_um = 70,
+        overwrite=True,
+    )
 
-#     analyzer.compute(generic_postprocessing)
+    analyzer.compute(generic_postprocessing)
 
-#     subprocess.run(["rm", "-r", str(Path(str(analyzer_folder) + '.zarr') / "extensions/waveforms")]) 
+    subprocess.run(["rm", "-r", str(Path(str(analyzer_folder) + '.zarr') / "extensions/waveforms")]) 
 
 

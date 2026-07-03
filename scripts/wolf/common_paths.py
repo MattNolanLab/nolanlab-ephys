@@ -7,7 +7,7 @@ Can be a helpful place to store paths to data and derivative folders.
 from pathlib import Path
 
 eddie_active_projects = Path(
-    "/exports/cmvm/datastore/sbms/groups/CDBS_SIDB_storage/NolanLab/ActiveProjects/"
+    "/exports/cmvm/datastore/sbms/groups/INCR-NolanLab/ActiveProjects"
 )
 
 chris_desktop_active_projects = Path(
