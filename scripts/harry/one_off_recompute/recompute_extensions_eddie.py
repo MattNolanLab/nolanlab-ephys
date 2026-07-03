@@ -50,7 +50,7 @@ for day in days:
     run_python_name = f"M{mouse}D{day}run"
 
     uv_directory = os.getcwd()
-    python_arg = f"$HOME/.local/bin/uv run --no-sync /exports/eddie/scratch/chalcrow/harry/code/nolanlab-ephys/scripts/harry/recompute_extensions.py {mouse} {day}"
+    python_arg = f"$HOME/.local/bin/uv run --no-sync /exports/eddie/scratch/chalcrow/harry/code/nolanlab-ephys/scripts/harry/one_off_recompute/recompute_extensions.py {mouse} {day}"
 
     run_stagein_script(stagein_dict, job_name=stagein_job_name)
     run_python_script(uv_directory, python_arg, cores=8, email="chalcrow@ed.ac.uk", staging=False, hold_jid=stagein_job_name, job_name=run_python_name)
