@@ -175,6 +175,7 @@ protocols = {
             'sorter_name': 'lupin',
             'cache_preprocessing_mode': 'folder',
             'apply_motion_correction': True,
+            "template_matching_engine": "wobble",
         },
         'preprocessing_for_analyzer': {
             'bandpass_filter': {},
