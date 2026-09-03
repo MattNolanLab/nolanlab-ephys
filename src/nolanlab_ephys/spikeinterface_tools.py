@@ -157,7 +157,7 @@ protocols = {
         'preprocessing': {
         },
         'sorting': {
-            'sorter_name': 'tridesclous2',
+            'sorter_name': 'lupin',
             'cache_preprocessing_mode': 'folder',
             'apply_motion_correction': False
         },

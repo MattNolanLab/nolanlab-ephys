@@ -67,9 +67,10 @@ def do_sorting_pipeline_concat_then_split(
     si.set_global_job_kwargs(n_jobs=n_jobs)
 
     concatenated_recording = si.concatenate_recordings(recordings)
+    grouped_recording = concatenated_recording.split_by('group')
 
     preprocessing_pipeline = si.PreprocessingPipeline(protocol_info["preprocessing"])
-    pp_recording = si.apply_preprocessing_pipeline(concatenated_recording, preprocessing_pipeline)
+    pp_recording = si.apply_preprocessing_pipeline(grouped_recording, preprocessing_pipeline)
     sorting = si.run_sorter(
         recording=pp_recording,
         **protocol_info["sorting"],
@@ -85,16 +86,21 @@ def do_sorting_pipeline_concat_then_split(
 
         # We have one big sorting from our concatenated recordings. Split this into individual sessions:
         recording_total_samples = recording.get_total_samples()
-        one_sorting = sorting.frame_slice(
-            cumulative_samples, cumulative_samples + recording_total_samples
-        )
+
+        # this creates one (shank-by-shank) sorting for the session (e.g. picks out just VR
+        # from a OF-VR recording)
+        one_sorting = {sorting_group_index: 
+            si.remove_excess_spikes(sorting_group, concatenated_recording).frame_slice(
+                cumulative_samples, cumulative_samples + recording_total_samples
+        ) for sorting_group_index, sorting_group in sorting.items()}
+
         cumulative_samples += recording_total_samples
 
         pipeline_for_analyzer = si.PreprocessingPipeline(
             protocol_info["preprocessing_for_analyzer"]
         )
         preprocessed_recording_for_analyzer = si.apply_preprocessing_pipeline(
-            recording, pipeline_for_analyzer
+            recording.split_by('group'), pipeline_for_analyzer
         )
 
         analyzer = si.create_sorting_analyzer(
@@ -165,7 +171,7 @@ def do_sorting_pipeline_concat(
 
     si.set_global_job_kwargs(n_jobs=n_jobs)
 
-    concatenated_recording = si.concatenate_recordings(recordings)
+    concatenated_recording = si.concatenate_recordings(recordings).split_by('group')
 
     pp_recording = si.apply_preprocessing_pipeline(
         concatenated_recording, protocol_info["preprocessing"]
